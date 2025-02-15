@@ -22,10 +22,10 @@
    - Navigate to `Database` in IntelliJ IDEA:
      - **Add Database** ? Select **PostgreSQL**.
      - Enter the following details:
-       - **Database Name**: `dsdb_4w9a`
+       - **Database Name**: `dsdb3`
        - **Username**: `dsuser`
-       - **Password**: `xDu55OhxyCgWlAvdRQcbOPzY47qR8cV0`
-       - **URL**: `jdbc:postgresql://dpg-cu2fbadds78s73dsf4a0-a.oregon-postgres.render.com:5432/dsdb_4w9a`
+       - **Password**: `DjbwS7QyGsuS9iGc67F8nREAMYLlFqus`
+       - **URL**: `jdbc:postgresql://dpg-cud2mn52ng1s73bbk2j0-a.oregon-postgres.render.com:5432/dsdb3`
      - Test the connection to ensure it succeeds.
      - Apply and save the configuration.
 
