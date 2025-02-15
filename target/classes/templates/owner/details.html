@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Owner Details</title>
+</head>
+<body>
+<div layout:fragment="main-content">
+    <h1>Owner Details</h1>
+
+    <div th:if="${owner != null}">
+        <p><strong>Username:</strong> <span th:text="${owner.username}"></span></p>
+        <p><strong>First Name:</strong> <span th:text="${owner.firstName}"></span></p>
+        <p><strong>Last Name:</strong> <span th:text="${owner.lastName}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${owner.email}"></span></p>
+        <p><strong>Phone Number:</strong> <span th:text="${owner.phoneNumber}"></span></p>
+
+        <!-- Edit and Back buttons -->
+        <div>
+            <a th:href="@{/owner/edit/{id}(id=${owner.id})}" class="btn btn-primary">Edit</a>
+            <a href="/owner" class="btn btn-secondary">Back to Owners</a>
+        </div>
+    </div>
+
+    <div th:if="${owner == null}">
+        <p>Owner not found!</p>
+        <a href="/owner" class="btn btn-secondary">Back to Owners</a>
+    </div>
+</div>
+</body>
+</html>

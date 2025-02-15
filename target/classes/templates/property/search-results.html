@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Properties</title>
+    <style>
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        /* Limit description text length and add ellipsis */
+        td.description {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Style the description box for better readability */
+        .description-box {
+            max-height: 100px;
+            overflow-y: auto;
+            word-wrap: break-word;
+            padding: 5px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+
+        /* Optional: Add tooltip on hover for long descriptions */
+        td.description:hover::after {
+            content: attr(data-full-text);
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            white-space: normal;
+            max-width: 300px;
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div layout:fragment="main-content">
+    <form action="" method="get" style="margin-bottom: 20px;">
+
+        <label for="type">Type</label>
+        <select name="type" id="type" class="form-control">
+            <option th:each="typeOpt : ${T(SpringTest.ds_2024.entity.PropertyType).values()}"
+                    th:value="${typeOpt}"
+                    th:text="${typeOpt}">
+            </option>
+        </select>
+
+        <label for="minPrice">Min Price:</label>
+        <input type="number" id="minPrice" name="minPrice" class="form-control" placeholder="e.g. 100">
+
+        <label for="maxPrice">Max Price:</label>
+        <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="e.g. 1000">
+
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <div th:if="${ not #lists.isEmpty(properties)}">
+        <h1>Approved Properties</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>propertyId</th>
+                <th>type</th>
+                <th>name</th>
+                <th>description</th>
+                <th>price</th>
+                <th>address</th>
+                <th>status</th>
+                <th>registrationDate</th>
+                <th>owner</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="property : ${properties}">
+                <td th:text="${property.propertyId}"></td>
+                <td th:text="${property.type}"></td>
+                <td th:text="${property.name}"></td>
+                <td th:text="${property.description}"></td>
+                <td th:text="${property.price}"></td>
+                <td th:text="${property.address}"></td>
+                <td th:text="${property.status}"></td>
+                <td th:text="${property.registrationDate}"></td>
+                <td th:text="${property.owner}"></td>
+                <td>
+                    <!--                    <form th:action="@{/property/{propertyId}/delete(id=${property.propertyId})}" method="post">-->
+                    <!--                        <button type="submit" class="btn btn-danger">Delete</button>-->
+                    <!--                    </form>-->
+                    <a sec:authorize="hasRole('ADMIN')" th:href="@{'/property/delete/' + ${property.propertyId}} "
+                       onclick="return confirm('Are you sure you want to delete this property?');" class="btn btn-danger">
+                        Delete
+                    </a>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${ #lists.isEmpty(properties)}">
+        No property found!
+    </div>
+    <a sec:authorize="hasRole('OWNER')" href="/property/new"  class="btn btn-primary" role="button">Create new property</a>
+</div>
+</body>
+</html>

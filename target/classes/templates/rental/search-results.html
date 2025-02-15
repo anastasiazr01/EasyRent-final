@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Available Properties</title>
+    <style>
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        /* Limit description text length and add ellipsis */
+        td.description {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Style the description box for better readability */
+        .description-box {
+            max-height: 100px;
+            overflow-y: auto;
+            word-wrap: break-word;
+            padding: 5px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+
+        /* Optional: Add tooltip on hover for long descriptions */
+        td.description:hover::after {
+            content: attr(data-full-text);
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            white-space: normal;
+            max-width: 300px;
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="main-content">
+    <form action="" method="get" style="margin-bottom: 20px;">
+
+        <label for="type">Type</label>
+        <select name="type" id="type" class="form-control">
+            <option th:each="typeOpt : ${T(SpringTest.ds_2024.entity.PropertyType).values()}"
+                    th:value="${typeOpt}"
+                    th:text="${typeOpt}">
+            </option>
+        </select>
+
+        <label for="minPrice">Min Price:</label>
+        <input type="number" id="minPrice" name="minPrice" class="form-control" placeholder="e.g. 100">
+
+        <label for="maxPrice">Max Price:</label>
+        <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="e.g. 1000">
+
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <div th:if="${ not #lists.isEmpty(properties)}">
+        <h1>Available Properties</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Address</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Rent Property</th>
+                <th>View Property</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="property : ${properties}">
+                <td th:text="${property.propertyId}"></td>
+                <td th:text="${property.name}"></td>
+                <td th:text="${property.type}"></td>
+                <td th:text="${property.address}"></td>
+
+                <!-- Add a class to the description column and use a tooltip -->
+                <td class="description" th:text="${property.description}" th:data-full-text="${property.description}"></td>
+
+                <td th:text="${property.price} + ' €'"></td>
+                <!--            <td>-->
+                <!--                <a sec:authorize="hasRole('TENANT')"th:href="@{/rental/new/{propertyId}(propertyId=${property.propertyId})}" class="btn btn-primary">-->
+                <!--                    Rent-->
+                <!--                </a>-->
+                <!--            </td>    -->
+                <td>
+                    <a sec:authorize="hasRole('TENANT')" th:href="@{'/rental/rent/' + ${property.propertyId}} "
+                       onclick="return confirm('Are you sure you want to Rent this property?');" class="btn btn-primary">
+                        Rent
+                    </a>
+                </td>
+                <td>
+                    <a sec:authorize="hasRole('TENANT')" th:href="@{'/rental/view/' + ${property.propertyId}} "
+                       onclick="return confirm('Are you sure you want to View this property in person?');" class="btn btn-primary">
+                        View
+                    </a>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${ #lists.isEmpty(properties)}">
+        No property found!
+    </div>
+</div>
+</body>
+</html>
