@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+</head>
+<body>
+<div layout:fragment="main-content">
+    <h1>My Profile</h1>
+
+    <div th:if="${owner != null}">
+        <p><strong>Username:</strong> <span th:text="${owner.username}"></span></p>
+        <p><strong>First Name:</strong> <span th:text="${owner.firstName}"></span></p>
+        <p><strong>User ID:</strong> <span th:text="${owner.id}"></span></p>
+        <p><strong>Last Name:</strong> <span th:text="${owner.lastName}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${owner.email}"></span></p>
+        <p><strong>Phone Number:</strong> <span th:text="${owner.phoneNumber}"></span></p>
+
+        <div>
+            <a th:href="@{/owner/edit-profile}" class="btn btn-primary">Edit Profile</a>
+        </div>
+
+        <h2>My Properties</h2>
+        <div th:if="${ownerProperties != null and not #lists.isEmpty(ownerProperties)}">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>property name</th>
+                    <th>address</th>
+                    <th>price</th>
+                    <th>status</th>
+                    <th>actions</th>
+                </tr>
+                <tr th:each="property : ${ownerProperties}">
+                    <td th:text="${property.name}"></td>
+                    <td th:text="${property.address}"></td>
+                    <td th:text="${property.price}"></td>
+                    <td th:text="${property.status}"></td>
+                    <td>
+                    <a sec:authorize="hasRole('OWNER')" th:href="@{'/property/delete/' + ${property.propertyId}} "
+                       onclick="return confirm('Are you sure you want to delete this property?');" class="btn btn-danger">
+                        Delete
+                    </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div th:if="${ownerProperties == null or #lists.isEmpty(ownerProperties)}">
+            <p>You have no properties registered yet.</p>
+        </div>
+    </div>
+
+    <div th:if="${owner == null}">
+        <p>Owner not found!</p>
+        <a href="/" class="btn btn-secondary">Go to Home</a>
+    </div>
+</div>
+</body>
+</html>

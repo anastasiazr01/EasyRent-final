@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<header class="masthead mb-auto" th:fragment="header">
+    <div class="inner">
+        <h3 class="masthead-brand">EasyRent</h3>
+        <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link active" href="/">Home</a>
+            <a sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="nav-link" href="/admin">Admin</a>
+            <a sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="nav-link" href="/owner">Owner</a>
+            <a sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="nav-link" href="/tenant">Tenant</a>
+            <a sec:authorize="isAuthenticated() and !hasRole('TENANT')" class="nav-link" href="/property">Property</a>
+            <a sec:authorize="isAuthenticated()" class="nav-link" href="/rental">Rent</a>
+            <a sec:authorize="isAuthenticated() and hasRole('OWNER')" class="nav-link" href="/rental/application-list/all">Rental Applic. Management</a>
+            <a sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="nav-link" href="/property/property-application/all">Property Applic. Management</a>
+            <!--            <a sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="nav-link" href="/users">Users</a>-->
+            <a sec:authorize="isAuthenticated() and hasRole('TENANT')" class="nav-link" href="/tenant/profile">My Profile</a>
+            <a sec:authorize="isAuthenticated() and hasRole('OWNER')" class="nav-link" href="/owner/profile">My Profile</a>
+
+
+            <a sec:authorize="isAuthenticated()"  class="nav-link">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit"  class="btn btn-danger" value="Sign Out"/>
+                </form> </a>
+            <a sec:authorize="!isAuthenticated()" href="/login" class="nav-link">Login
+            </a>
+            <a sec:authorize="!isAuthenticated()" href="/register" class="nav-link">Register
+            </a>
+        </nav>
+    </div>
+</header>
+
+</body>
+</html>

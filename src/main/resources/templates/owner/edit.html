@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Owner</title>
+</head>
+<body>
+<div layout:fragment="main-content">
+    <h1>Edit Owner</h1>
+
+    <form th:action="@{/owner/edit/{id}(id=${owner.id})}" th:object="${owner}" method="post">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" th:value="${owner.username}" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" th:value="${owner.password}" required>
+        </div>
+        <div>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" th:value="${owner.firstName}" required>
+        </div>
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" th:value="${owner.lastName}" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" th:value="${owner.email}" required>
+        </div>
+        <div>
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" th:value="${owner.phoneNumber}" required>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a th:href="@{/owner}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
